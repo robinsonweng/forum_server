@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+        #tooglePostFormLink{
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        #postForm{
+            width: auto;
+        }
+         
+        #postFile{
+            margin-right: 10px;
+            width: 200px;
+        }
+        .random{
+            display: none;
+        }
+
+        .tableForm{
+            overflow: hidden;
+            margin-top: 20px;
+            display: table;
+        }
+
+        .mobile{
+            clear: left!important;
+        }
+
+        .moblieSpoiler{
+            padding: 2px!important;
+        }
+
+        .desktop{
+            display:none!important
+        }
+
+        .Title{
+            text-align: center;
+            font-size: 28px;
+            font-weight: 800;
+            margin-top: 0;
+            color: brown;
+        }
+
+        td{
+            margin:0;
+            padding:0;
+            font-size: 10pt;
+            display: table-cell;
+            vertical-align: inherit;
+        }
+
+        table{
+            border-spacing: 1px;
+            margin-left: auto;
+            margin-right:auto;
+            border-collapse: separate;
+        }
+        </style>
+
+
+        <div class="Title">Meme</div>
+        <hr>
+
+    </head>
+<body bgcolor="#cce4ff">
+        <form style="position:absolute; bottom:50%;" method="post">
+            <button type="submit">Return to HomePage</button>
+        </form>
+
+    
+        <form name="post" action="https://forum.html/a/" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="MAX_FILE_SIZE" value="4194304">
+            <input type="hidden" name="mode" value="regist">
+            <input id="postPassword" name="pwd" type="hidden" value="nsssssssss">
+
+        <div id="tooglePostFormLink" class="random">
+            "["
+            <a href="#">Start a New Thread</a>
+            "]"
+        </div>
+
+        <table class="tableForm" id="postForm">
+            <tbody>
+                <tr data-type="Name">
+                    <td>Name</td>
+                    <td>
+                        <input name="name" type="text" tabindex="1" placeholder="Anonymous">
+                    </td>
+                </tr>
+
+
+                <tr data-type="Options">
+                    <td>Options</td>
+                    <td>
+                        <input name="email" type="text" tabindex="2">
+                    </td>
+                </tr>
+
+                <tr data-type="Subject">
+                    <td>Subject</td>
+                    <td>
+                        <input name="sub" type="text" tabindex="3">
+                        <input type="submit" value="Post" tabindex="6">
+                    </td>
+                </tr>
+
+                <tr data-type="Comment">
+                    <td>Comment</td>
+                    <td>
+                      <textarea name="com" cols="48" rows="4" wrap="soft" tabindex="4"></textarea>  
+                    </td>
+                </tr>
+
+               <tr data-type="File">
+                   <td>File</td>
+                   <td>
+                       <input id="postFile" name="upfile" type="file" tabindex="7">
+                       <span class="desktop">
+                           "["
+                           <label>
+                               <input type="checkbox" name="spoiler" value="on" tabindex="8">
+                               "Spoiler?"
+                           </label>
+                           "]"
+                       </span>
+                   </td>
+                </tr> 
+
+                
+            </tbody>
+        </table>
+    </form>
+</html
