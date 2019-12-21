@@ -68,12 +68,13 @@
 
     </head>
 <body bgcolor="#cce4ff">
+        
         <form style="position:absolute; bottom:50%;" method="post">
-            <button type="submit">Return to HomePage</button>
+            <button name="HomepageButton" type="submit">Return to HomePage</button>
         </form>
 
     
-        <form name="post" action="https://forum.html/a/" method="POST" enctype="multipart/form-data">
+        <form name="post" action="#" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="MAX_FILE_SIZE" value="4194304">
             <input type="hidden" name="mode" value="regist">
             <input id="postPassword" name="pwd" type="hidden" value="nsssssssss">
@@ -97,22 +98,22 @@
                 <tr data-type="Options">
                     <td>Options</td>
                     <td>
-                        <input name="email" type="text" tabindex="2">
+                        <input name="email_name" type="text" tabindex="2">
                     </td>
                 </tr>
 
                 <tr data-type="Subject">
                     <td>Subject</td>
                     <td>
-                        <input name="sub" type="text" tabindex="3">
-                        <input type="submit" value="Post" tabindex="6">
+                        <input name="subject_name" type="text" tabindex="3">
+                        <input type="submit" name="PostThread" value="Post" tabindex="6">
                     </td>
                 </tr>
 
                 <tr data-type="Comment">
                     <td>Comment</td>
                     <td>
-                      <textarea name="com" cols="48" rows="4" wrap="soft" tabindex="4"></textarea>  
+                      <textarea name="comment_name" cols="48" rows="4" wrap="soft" tabindex="4"></textarea>  
                     </td>
                 </tr>
 
@@ -135,4 +136,5 @@
             </tbody>
         </table>
     </form>
+    <hr>
 </html

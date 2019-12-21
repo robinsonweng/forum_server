@@ -10,8 +10,13 @@ def homepage():
 @app.route('/forum',methods=['GET','POST'])
 def forum():
     if request.method=='POST':
-        return redirect(url_for('homepage'))
+        if 'PostThread' in request.form:
+            return redirect(url_for('forum'))
+            return render_template('box.html')
+        elif 'HomepageButton' in request.form:
+            return redirect(url_for('homepage'))
     return render_template("forum.html")
+
 
 
 if  __name__== '__main__':
