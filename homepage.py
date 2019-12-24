@@ -11,8 +11,19 @@ def homepage():
 def forum():
     if request.method=='POST':
         if 'PostThread' in request.form:
-            return redirect(url_for('forum'))
-            return render_template('box.html')
+            username = request.form.get("name")
+            email = request.form.get("email_name")
+            subject = request.form.get("subject_name")
+            comment = request.form.get("comment_name")
+           
+
+            username = request.form["name"]
+            email = request.form["email_name"]
+            subject = request.form["subject_name"]
+            comment = request.form["comment_name"]
+           
+
+            return redirect(url_for('forum'))          
         elif 'HomepageButton' in request.form:
             return redirect(url_for('homepage'))
     return render_template("forum.html")
