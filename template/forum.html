@@ -1,6 +1,8 @@
 <!doctype html>
 <html>
     <head>
+        <title>Meme forum</title>
+        <link rel="icon" href="{{url_for('static',filename='images/iconlogo.png')}}">
         <style>
         #tooglePostFormLink{
             font-size: 22px;
@@ -46,12 +48,22 @@
             color: brown;
         }
 
+
+        .middleline{
+            width:500px;
+
+        }
+
+        .username{
+            font-size: ;
+            font-weight: bold;
+        }
         td{
             margin:0;
             padding:0;
             font-size: 10pt;
             display: table-cell;
-            vertical-align: inherit;
+            vertical-align: inherit;    
         }
 
         table{
@@ -64,17 +76,17 @@
 
 
         <div class="Title">Meme</div>
-        <hr>
+        <hr class="middleline">
 
     </head>
 <body bgcolor="#cce4ff">
         
-        <form style="position:absolute; bottom:50%;" method="post">
+        <form style="position:absolute; bottom:50%;" method="POST">
             <button name="HomepageButton" type="submit">Return to HomePage</button>
         </form>
 
     
-        <form name="post" action="#" method="POST" enctype="multipart/form-data">
+        <form name="post" action="{{url_for('forum')}}" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="MAX_FILE_SIZE" value="4194304">
             <input type="hidden" name="mode" value="regist">
             <input id="postPassword" name="pwd" type="hidden" value="nsssssssss">
@@ -88,7 +100,7 @@
         <table class="tableForm" id="postForm">
             <tbody>
                 <tr data-type="Name">
-                    <td>Name</td>
+                    <td style="font-weight: bold;">Name</td>
                     <td>
                         <input name="name" type="text" tabindex="1" placeholder="Anonymous">
                     </td>
@@ -96,14 +108,14 @@
 
 
                 <tr data-type="Options">
-                    <td>Options</td>
+                    <td style="font-weight: bold;"> Options</td>
                     <td>
                         <input name="email_name" type="text" tabindex="2">
                     </td>
                 </tr>
 
                 <tr data-type="Subject">
-                    <td>Subject</td>
+                    <td style="font-weight: bold;">Title</td>
                     <td>
                         <input name="subject_name" type="text" tabindex="3">
                         <input type="submit" name="PostThread" value="Post" tabindex="6">
@@ -111,14 +123,14 @@
                 </tr>
 
                 <tr data-type="Comment">
-                    <td>Comment</td>
+                    <td style="font-weight: bold;">Comment</td>
                     <td>
                       <textarea name="comment_name" cols="48" rows="4" wrap="soft" tabindex="4"></textarea>  
                     </td>
                 </tr>
 
                <tr data-type="File">
-                   <td>File</td>
+                   <td style="font-weight: bold;">File</td>
                    <td>
                        <input id="postFile" name="upload_file" type="file" tabindex="7">
                        <span class="desktop">
@@ -130,11 +142,41 @@
                            "]"
                        </span>
                    </td>
-                </tr> 
-
-                
+                </tr>     
             </tbody>
         </table>
+
     </form>
+
     <hr>
+
+    
+        
+        <table border="2">
+            <thead>
+                <tr>
+                    <th>username</th>
+                    <th>Title</th>
+                    <th>comment</th>
+                    <th>time</th>
+                    <th>Test</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for say in says %}
+                    <tr>
+                        <td>{{ say['username'] }}</td>
+                        <td>{{ say['subject'] }}</td>
+                        <td>{{ say['comment'] }}</td>
+                        <td>{{ say['date'] }}</td>
+                        
+                    </tr>
+                {% endfor %}
+
+
+            </tbody>
+        </table>
+    
 </html

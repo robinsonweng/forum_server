@@ -1,11 +1,16 @@
 from flask import Flask
 from flask import render_template,url_for,request,redirect
+import time
 
-app=Flask(__name__,template_folder='template')
+app=Flask(__name__,template_folder='template',static_url_path='/static')
+
+bottle=[]
 
 @app.route('/')
 def homepage():
     return render_template("homepage.html")
+
+
 
 @app.route('/forum',methods=['GET','POST'])
 def forum():
@@ -15,17 +20,20 @@ def forum():
             email = request.form.get("email_name")
             subject = request.form.get("subject_name")
             comment = request.form.get("comment_name")
-           
+            date=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
 
-            username = request.form["name"]
-            email = request.form["email_name"]
-            subject = request.form["subject_name"]
-            comment = request.form["comment_name"]
-           
+            bottle.append({"username":username,"email":email,"subject":subject,"comment":comment,"date":date})
+    
+            return redirect(url_for('forum'))
 
-            return redirect(url_for('forum'))          
         elif 'HomepageButton' in request.form:
             return redirect(url_for('homepage'))
+    if request.method=="GET":
+        return render_template('forum.html',says=bottle)
+
+
+    
+     
     return render_template("forum.html")
 
 
