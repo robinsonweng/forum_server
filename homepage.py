@@ -29,9 +29,10 @@ def forum():
             # insert posts
             with dbconnect() as session:
                 uid = session.execute(f'SELECT uid FROM user WHERE uname = "{username}"').fetchone()[0]
-                pid = len(session.execute(f'SELECT pid FROM post').fetchmany())
+                pid = len(session.execute(f'SELECT pid FROM post').fetchall())
+
                 session.execute(f'INSERT INTO post (p_uid, pid, title, context, date)\
-                                  VALUES({uid}, {pid+1}, "{subject}", "{comment}", "{date}")')
+                                  VALUES({uid}, {pid+1}, "{subject}", "{comment}", CURRENT_TIMESTAMP)')
             return redirect(url_for('forum'))
         elif 'HomepageButton' in request.form:
             return redirect(url_for('homepage'))

@@ -24,6 +24,6 @@ class DBConnect(object):
 
 if __name__ == "__main__":
     with DBConnect() as session:
-        pid = session.execute(f'SELECT pid FROM post').rowcount
+        pid = session.execute(f'SELECT title FROM post').fetchall()
         print(pid)
         
