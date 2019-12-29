@@ -23,14 +23,14 @@ def forum():
 
             # check if user exsist
             with dbconnect() as session:
-                uname = session.execute('SELECT uname FROM user')
-                if username not in uname:
+                uname = session.execute(f'SELECT uname FROM user WHERE uname = "{username}"').fetchone()
+                if not uname:
                     session.execute(f'INSERT INTO user (uid, uname, email) VALUES ({uname.rowcount+1}, "{username}", "{email}")')
             # insert posts
             with dbconnect() as session:
                 uid = session.execute(f'SELECT uid FROM user WHERE uname = "{username}"').fetchone()[0]
-                pid = session.execute(f'SELECT pid FROM post').rowcount
-                session.execute(f'INSERT INTO post (uid, pid, title, context, date)\
+                pid = len(session.execute(f'SELECT pid FROM post').fetchmany())
+                session.execute(f'INSERT INTO post (p_uid, pid, title, context, date)\
                                   VALUES({uid}, {pid+1}, "{subject}", "{comment}", "{date}")')
             return redirect(url_for('forum'))
         elif 'HomepageButton' in request.form:
@@ -40,7 +40,7 @@ def forum():
         with dbconnect() as session:
             posts = session.execute(f'SELECT uname, email, title, context, date\
                                       FROM post, user\
-                                      WHERE post.uid = user.uid'
+                                      WHERE post.p_uid = user.uid'
             )
             bottle = []
             for post in posts:
