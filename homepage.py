@@ -1,10 +1,14 @@
 from flask import Flask
-from flask import render_template,url_for,request,redirect
+from flask import render_template, url_for, request, redirect, flash, session
+from flask_session.__init__ import Session
 from module.dbconnect import DBConnect as dbconnect
 import time
 
 
 app=Flask(__name__,template_folder='template',static_url_path='/static')
+app.config['SESSION_TYPE']='memached'
+app.config['SECRET_KEY']='super secret key'
+sess=Session()
 
 
 @app.route('/')
@@ -20,19 +24,30 @@ def forum():
             subject = request.form.get("subject_name")
             comment = request.form.get("comment_name")
             date=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
-
+            
+            if not username:
+                flash('Username cannot be empty')
+            if not email:
+                flash('Email cannot be empty')
+            if not subject:
+                flash('Subject cannot be empty')
+            if not comment:
+                flash('Comment cannot be empty')
+            else:
             # check if user exsist
-            with dbconnect() as session:
-                uname = session.execute(f'SELECT uname FROM user WHERE uname = "{username}"').fetchone()
-                if not uname:
-                    session.execute(f'INSERT INTO user (uid, uname, email) VALUES ({uname.rowcount+1}, "{username}", "{email}")')
+                with dbconnect() as session:
+                    uname = session.execute(f'SELECT uname FROM user WHERE uname = "{username}"').fetchall()
+                    uname=[name[0] for name in uname]
+                    if not uname:
+                        session.execute(f'INSERT INTO user (uid, uname, email)\
+                                          VALUES ({len(uname)+1}, "{username}", "{email}")')
             # insert posts
-            with dbconnect() as session:
-                uid = session.execute(f'SELECT uid FROM user WHERE uname = "{username}"').fetchone()[0]
-                pid = len(session.execute(f'SELECT pid FROM post').fetchall())
+                with dbconnect() as session:
+                    uid = session.execute(f'SELECT uid FROM user WHERE uname = "{username}"').fetchone()[0]
+                    pid = len(session.execute(f'SELECT pid FROM post').fetchall())
 
-                session.execute(f'INSERT INTO post (p_uid, pid, title, context, date)\
-                                  VALUES({uid}, {pid+1}, "{subject}", "{comment}", CURRENT_TIMESTAMP)')
+                    session.execute(f'INSERT INTO post (p_uid, pid, title, context, date)\
+                                      VALUES({uid}, {pid+1}, "{subject}", "{comment}", CURRENT_TIMESTAMP)')
             return redirect(url_for('forum'))
         elif 'HomepageButton' in request.form:
             return redirect(url_for('homepage'))

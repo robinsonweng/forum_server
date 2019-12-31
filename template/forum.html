@@ -48,10 +48,48 @@
             color: brown;
         }
 
+        .button{
+            display: inline-block;
+            border-radius: 2px;
+            background-color: #e0c4e9;
+            border: none;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 15px;
+            padding: 5px;
+            width: 115px;
+            transition: all 0.5s;
+            cursor: pointer;
+            margin: 2px;
+        }
 
+        .button span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+
+        .button span:after {
+            content: '\00bb';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            left: -20px;
+            transition: 0.5s;
+        }
+
+        .button:hover span {
+            padding-left: 25px;
+        }
+
+        .button:hover span:after {
+            opacity: 1;
+            left: 0;
+        }
+        
         .middleline{
             width:500px;
-
         }
 
         .username{
@@ -81,11 +119,12 @@
     </head>
 <body bgcolor="#cce4ff">
         
-        <form style="position:absolute; bottom:50%;" method="POST">
-            <button name="HomepageButton" type="submit">Return to HomePage</button>
+    <!--Homepage_Button-->
+        <form style="position:absolute; bottom:3%;" method="POST">
+            <button name="HomepageButton" type="submit" class="button"><span>Homepage</span></button>
         </form>
 
-    
+        <!--Post_Button-->
         <form name="post" action="{{url_for('forum')}}" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="MAX_FILE_SIZE" value="4194304">
             <input type="hidden" name="mode" value="regist">
@@ -97,6 +136,7 @@
             "]"
         </div>
 
+        <!--Name-->
         <table class="tableForm" id="postForm">
             <tbody>
                 <tr data-type="Name">
@@ -106,14 +146,26 @@
                     </td>
                 </tr>
 
-
+                <!--warning message-->
+                {% block content %}
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for msg in messages %}
+                            <p style="background-color:#ff9999; text-align:center; font-size:large;">{{msg}}</p>
+                        {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                {% endblock content %}
+                
+                <!--Email-->
                 <tr data-type="Options">
-                    <td style="font-weight: bold;"> Options</td>
+                    <td style="font-weight: bold;"> Email</td>
                     <td>
                         <input name="email_name" type="text" tabindex="2">
                     </td>
                 </tr>
 
+                <!--Title-->
                 <tr data-type="Subject">
                     <td style="font-weight: bold;">Title</td>
                     <td>
@@ -122,6 +174,7 @@
                     </td>
                 </tr>
 
+                <!--Comment-->
                 <tr data-type="Comment">
                     <td style="font-weight: bold;">Comment</td>
                     <td>
@@ -129,6 +182,7 @@
                     </td>
                 </tr>
 
+                <!--File_Upload-->
                <tr data-type="File">
                    <td style="font-weight: bold;">File</td>
                    <td>
@@ -150,33 +204,33 @@
 
     <hr>
 
-    
-        
-        <table border="2">
-            <thead>
+    <table border="2">
+        <thead>
+            <tr>
+                <th>username</th>
+                <th>Email</th>
+                <th>Title</th>
+                <th>comment</th>
+                <th>time</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for say in says %}
                 <tr>
-                    <th>username</th>
-                    <th>Title</th>
-                    <th>comment</th>
-                    <th>time</th>
-                    <th>Test</th>
+                    <td>{{ say['username'] }}</td>
+                    <td>{{ say['email']}}</td>
+                    <td>{{ say['subject'] }}</td>
+                    <td>{{ say['comment'] }}</td>
+                    <td>{{ say['date'] }}</td>       
                 </tr>
-            </thead>
-
-            <tbody>
-
-                {% for say in says %}
-                    <tr>
-                        <td>{{ say['username'] }}</td>
-                        <td>{{ say['subject'] }}</td>
-                        <td>{{ say['comment'] }}</td>
-                        <td>{{ say['date'] }}</td>
-                        
-                    </tr>
-                {% endfor %}
+            {% endfor %}
 
 
-            </tbody>
-        </table>
+        </tbody>
+    </table>
+
+          
     
 </html
