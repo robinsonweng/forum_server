@@ -19,13 +19,13 @@ def forum():
             email = request.form.get("email_name")
             subject = request.form.get("subject_name")
             comment = request.form.get("comment_name")
-            date=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
 
             # check if user exsist
             with dbconnect() as session:
-                uname = session.execute(f'SELECT uname FROM user WHERE uname = "{username}"').fetchone()
+                uname = session.execute(f'SELECT uname FROM user WHERE  uname = "{username}"').fetchall()
+                uname = [name[0] for name in uname] 
                 if not uname:
-                    session.execute(f'INSERT INTO user (uid, uname, email) VALUES ({uname.rowcount+1}, "{username}", "{email}")')
+                    session.execute(f'INSERT INTO user (uid, uname, email) VALUES ({len(uname)+1}, "{username}", "{email}")')
             # insert posts
             with dbconnect() as session:
                 uid = session.execute(f'SELECT uid FROM user WHERE uname = "{username}"').fetchone()[0]
