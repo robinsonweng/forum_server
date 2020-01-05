@@ -2,78 +2,13 @@
 <html>
     <head>
         <title>Meme forum</title>
-        <link rel="icon" href="{{url_for('static',filename='images/iconlogo.png')}}">
-        <style>
-        #tooglePostFormLink{
-            font-size: 22px;
-            font-weight: 700;
-            text-align: center;
-        }
-        
-        #postForm{
-            width: auto;
-        }
-         
-        #postFile{
-            margin-right: 10px;
-            width: 200px;
-        }
-        .random{
-            display: none;
-        }
+        <link rel="icon" href="{{url_for('static',filename='images/weed.png')}}">
 
-        .tableForm{
-            overflow: hidden;
-            margin-top: 20px;
-            display: table;
-        }
+        <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='styles/forum.css')}}">
 
-        .mobile{
-            clear: left!important;
-        }
-
-        .moblieSpoiler{
-            padding: 2px!important;
-        }
-
-        .desktop{
-            display:none!important
-        }
-
-        .Title{
-            text-align: center;
-            font-size: 28px;
-            font-weight: 800;
-            margin-top: 0;
-            color: brown;
-        }
-
-
-        .middleline{
-            width:500px;
-
-        }
-
-        .username{
-            font-size: ;
-            font-weight: bold;
-        }
-        td{
-            margin:0;
-            padding:0;
-            font-size: 10pt;
-            display: table-cell;
-            vertical-align: inherit;    
-        }
-
-        table{
-            border-spacing: 1px;
-            margin-left: auto;
-            margin-right:auto;
-            border-collapse: separate;
-        }
-        </style>
-
+        <div style="justify-content:center ;display:flex ;">
+            <img src="/static/images/star.jpg" alt="MEMEWAR" border="2">
+        </div>
 
         <div class="Title">Meme</div>
         <hr class="middleline">
@@ -81,11 +16,13 @@
     </head>
 <body bgcolor="#cce4ff">
         
-        <form style="position:absolute; bottom:50%;" method="POST">
-            <button name="HomepageButton" type="submit">Return to HomePage</button>
+
+    <!--Homepage_Button-->
+        <form style="overflow:auto ;position:fixed;bottom:-4px ;right:10px; ;" method="POST">
+            <button name="HomepageButton" type="submit" class="button"><span>Homepage</span></button>
         </form>
 
-    
+        <!--Post_Button-->
         <form name="post" action="{{url_for('forum')}}" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="MAX_FILE_SIZE" value="4194304">
             <input type="hidden" name="mode" value="regist">
@@ -97,40 +34,55 @@
             "]"
         </div>
 
+        <!--Name-->
         <table class="tableForm" id="postForm">
             <tbody>
                 <tr data-type="Name">
-                    <td style="font-weight: bold;">Name</td>
+                    <td style="font-weight:bold ;">Name</td>
                     <td>
                         <input name="name" type="text" tabindex="1" placeholder="Anonymous">
                     </td>
                 </tr>
 
-
+                <!--warning message-->
+                {% block content %}
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for msg in messages %}
+                            <p style="background-color:#ff9999 ;text-align:center ;font-size:large ;">{{msg}}</p>
+                        {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                {% endblock content %}
+                
+                <!--Email-->
                 <tr data-type="Options">
-                    <td style="font-weight: bold;"> Options</td>
+                    <td style="font-weight:bold ;"> Email</td>
                     <td>
                         <input name="email_name" type="text" tabindex="2">
                     </td>
                 </tr>
 
+                <!--Title-->
                 <tr data-type="Subject">
-                    <td style="font-weight: bold;">Title</td>
+                    <td style="font-weight:bold ;">Topic</td>
                     <td>
                         <input name="subject_name" type="text" tabindex="3">
                         <input type="submit" name="PostThread" value="Post" tabindex="6">
                     </td>
                 </tr>
 
+                <!--Comment-->
                 <tr data-type="Comment">
-                    <td style="font-weight: bold;">Comment</td>
+                    <td style="font-weight:bold ;">Comment</td>
                     <td>
                       <textarea name="comment_name" cols="48" rows="4" wrap="soft" tabindex="4"></textarea>  
                     </td>
                 </tr>
 
+                <!--File_Upload-->
                <tr data-type="File">
-                   <td style="font-weight: bold;">File</td>
+                   <td style="font-weight:bold ;">File</td>
                    <td>
                        <input id="postFile" name="upload_file" type="file" tabindex="7">
                        <span class="desktop">
@@ -148,35 +100,40 @@
 
     </form>
 
-    <hr>
+        <hr>
 
-    
-        
-        <table border="2">
-            <thead>
-                <tr>
-                    <th>username</th>
-                    <th>Title</th>
-                    <th>comment</th>
-                    <th>time</th>
-                    <th>Test</th>
-                </tr>
-            </thead>
+        <div>
+            <marquee behaviour="scroll" direction="down" scrollamount="2" >
+                <a style="color: red;">Donald Trump pass by and Make this Wall for Toxic Memer</a>
+            </marquee>
+        </div>      
+          
 
-            <tbody>
+            {% for say in says %}
+            <hr>
+                <div style="padding-top:1px ;padding-bottom:10px ;padding-right:auto ;">
+                    <div style="background-color:#b3d1ff ;">
+                        <div style="color:#208000;">
+                            <a style="font-weight:bold; color:black;">User:</a> {{ say['username'] }}// 
 
-                {% for say in says %}
-                    <tr>
-                        <td>{{ say['username'] }}</td>
-                        <td>{{ say['subject'] }}</td>
-                        <td>{{ say['comment'] }}</td>
-                        <td>{{ say['date'] }}</td>
-                        
-                    </tr>
-                {% endfor %}
+                            <a>
+                                <a style="font-weight:bold; color:black;">Email:</a>{{ say['email']}}//
+                            </a>
 
+                            <a>
+                                <a style="font-weight:bold; color:black;">Topic:</a>{{ say['subject'] }}//
+                            </a>
 
-            </tbody>
-        </table>
-    
-</html
+                            <a>{{ say['date'] }}//</a>
+
+                        </div>
+                        <a ><a style="font-weight:bold; ">Comment:</a>{{ say['comment'] }}</a>
+                              
+                    </div>
+                </div>
+            {% endfor %}
+
+        <div style="text-align:center ;font-size:smaller ;font-weight: bold ;">
+            <a>All trademark and Copyrights are owned by their respective parties.Image Uploaded and Comment are owned by thr Post Owners.</a>
+        </div>
+</html>
