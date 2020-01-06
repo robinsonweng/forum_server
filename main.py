@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, url_for, request, redirect, flash, session
+from flask import render_template, url_for, request, redirect, flash, session, make_response
 from flask_session.__init__ import Session
 from module.dbconnect import DBConnect as dbconnect
 import time
@@ -23,39 +23,39 @@ def forum():
             email = request.form.get("email_name")
             subject = request.form.get("subject_name")
             comment = request.form.get("comment_name")
-            date=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
-            
-            if not username:
-                flash('Username cannot be empty')
-            if not email:
-                flash('Email cannot be empty')
-            if not subject:
-                flash('Subject cannot be empty')
-            if not comment:
-                flash('Comment cannot be empty')
-            else:
+            print("form", request.form)
+            input_ = {"username":username, "email":email, "title":subject, "comment":comment}
+            is_empty = False
+            for key in input_:
+                if input_[key] == "":
+                    flash(f'the {key} is empty')
+                    is_empty = True
+                
+            if not is_empty:
             # check if user exsist
-                with dbconnect() as session:
+                with dbconnect('forum.db') as session:
                     uname = session.execute(f'SELECT uname FROM user WHERE uname = "{username}"').fetchone()
                     name_list = session.execute(f'SELECT * FROM user').fetchall()
-                    print(len(name_list))
                     
                     if not uname:
                         session.execute(f'INSERT INTO user (uid, uname, email)\
                                           VALUES ({len(name_list)+1}, "{username}", "{email}")')
             # insert posts
-                with dbconnect() as session:
+                with dbconnect('forum.db') as session:
                     uid = session.execute(f'SELECT uid FROM user WHERE uname = "{username}"').fetchone()[0]
                     pid = len(session.execute(f'SELECT pid FROM post').fetchall())
 
                     session.execute(f'INSERT INTO post (p_uid, pid, title, context, date)\
                                       VALUES({uid}, {pid+1}, "{subject}", "{comment}", CURRENT_TIMESTAMP)')
-            return redirect(url_for('forum'))
+                return redirect(url_for('forum'))
+            else:
+                return redirect(url_for('forum'), code=201)
+                
         elif 'HomepageButton' in request.form:
             return redirect(url_for('homepage'))
 
     if request.method=="GET":
-        with dbconnect() as session:
+        with dbconnect('forum.db') as session:
             posts = session.execute(f'SELECT uname, email, title, context, date\
                                       FROM post, user\
                                       WHERE post.p_uid = user.uid'

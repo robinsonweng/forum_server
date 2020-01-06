@@ -4,10 +4,10 @@ import sqlite3
 class DBConnect(object):
     """using context manager to connect database
     """
-    def __init__(self):
+    def __init__(self, path):
         """connect to database when initalize 
         """
-        self.conn = sqlite3.connect('forum.db')
+        self.conn = sqlite3.connect(path)
 
     def __enter__(self):
         """create the cursor when in the with statement
@@ -23,7 +23,7 @@ class DBConnect(object):
 
 
 if __name__ == "__main__":
-    with DBConnect() as session:
+    with DBConnect('forum.db') as session:
         pid = session.execute(f'SELECT title FROM post').fetchall()
         print(pid)
         
