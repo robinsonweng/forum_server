@@ -36,11 +36,13 @@ def forum():
             else:
             # check if user exsist
                 with dbconnect() as session:
-                    uname = session.execute(f'SELECT uname FROM user WHERE uname = "{username}"').fetchall()
-                    uname=[name[0] for name in uname]
+                    uname = session.execute(f'SELECT uname FROM user WHERE uname = "{username}"').fetchone()
+                    name_list = session.execute(f'SELECT * FROM user').fetchall()
+                    print(len(name_list))
+                    
                     if not uname:
                         session.execute(f'INSERT INTO user (uid, uname, email)\
-                                          VALUES ({len(uname)+1}, "{username}", "{email}")')
+                                          VALUES ({len(name_list)+1}, "{username}", "{email}")')
             # insert posts
                 with dbconnect() as session:
                     uid = session.execute(f'SELECT uid FROM user WHERE uname = "{username}"').fetchone()[0]
